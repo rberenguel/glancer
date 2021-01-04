@@ -1,0 +1,39 @@
+cabal-version:       2.2
+name:                glancer
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/rberenguel/glancer#readme
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Ruben Berenguel
+copyright:           2021 Ruben Berenguel
+category:            Misc
+build-type:          Simple
+extra-source-files:  README.md
+
+common deps
+  build-depends:       base >= 4.7 && < 5, text, 
+                       bytestring, raw-strings-qq, 
+                       megaparsec, directory, filepath, mtl
+  default-language:    Haskell2010
+  ghc-options:         -fwarn-incomplete-patterns 
+                       -fwarn-unused-imports 
+                       -Werror=incomplete-patterns
+                       -fwrite-ide-info
+                       -hiedir=.hie
+
+executable glancer
+  import:              deps
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  other-modules:       Parser, Process, Html, Captions
+  build-depends:       optparse-applicative, hspec, containers,
+                       process, temporary,random, process-extras
+
+test-suite tests
+  import:              deps
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test, src
+  main-is:             Spec.hs
+  build-depends:       hspec, QuickCheck
