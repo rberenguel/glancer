@@ -52,6 +52,12 @@ cd glancer
 stack install
 ```
 
+You will need to have installed/available in the path:
+
+- The `base64` executable (should be in all IX systems by default)
+- `cat` in `/bin/cat` (likewise)
+- [`youtube-dlc`](https://github.com/blackjack4494/yt-dlc) installed. Note the _c_. There is currently a bug in the normal one with downloading auto-generated subtitles.
+
 ## Usage
 
 ```
@@ -73,3 +79,4 @@ In other words, `glancer https://www.youtube.com/watch?v=JWQxd3YKWhs internals-p
 - [ ] Some additional tweaks to the HTML/CSS (possibly adding some JS as well)
 
 _Note_: This README is long and winding on purpose.
+
