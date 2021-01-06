@@ -41,7 +41,7 @@ _Glancer_ should help with this. Given a YouTube url, it will:
 The goal is to be able to glance at the talk to decide if you really want to watch it or not. The _standalone_ part of the created webpage is to make it easier to "watch"/"share" to my iPad/iPhone without having to move a folder full of images. The whole talk becomes just a 5-15 Mb HTML file.
 
 A couple of additional neat (for me at least) features:
-- Hovering on the image will enlarge it, in case you want to see some code block larger.
+- Clicking/tapping on the image will enlarge it, in case you want to see some code block larger (I wanted hover, but it was too tricky on mobile).
 - Clicking on the arrow on the lower-right of the slid block will open the video on Youtube, at that moment in time.
 
 ## Installation
@@ -79,7 +79,7 @@ Sometimes `youtube-dlc` won't be able to find the embedded youtube video (I've s
 - [ ] Making the time between images customizable via the CLI (if I find out 30 is not good enough in general).
 - [ ] Add a test suite to harden subtitle parsing. I always think parsers will be small enough and that it will be "obvious" they work. It's never the case, at least I did it [right](https://github.com/rberenguel/haskset/blob/master/test/Spec.hs) [twice](https://github.com/rberenguel/bear-note-graph/blob/master/tests/test_parser.py).
 - [ ] Make the still images video-dependent (so several `glancer` commands can run concurrently, even if it's a bad idea)
-- [/] Some additional tweaks to the HTML/CSS (possibly adding some JS as well). Partially done: added some smoother transitions and changed the linking to be more mobile/tablet friendly.
+- [x] ~Some additional tweaks to the HTML/CSS (possibly adding some JS as well)~
 
 _Note_: This README is long and winding on purpose.
 
