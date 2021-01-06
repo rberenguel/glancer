@@ -73,7 +73,7 @@ processURL url = do
   title <- getTitle url
   id <- getId url
   let yourl = youtubeURL id
-  hPutStrLn stderr $ T.unpack ("Downloading from " <> coerce yourl)
+  hPutStrLn stderr $ T.unpack (T.strip ("Downloading from " <> coerce yourl))
   let video = Video yourl title videoName
   generateVideo video dir
   hPutStrLn stderr (T.unpack ("Downloaded video to " <> coerce dir <> coerce videoName <> "(.mp4|en.vtt)"))
