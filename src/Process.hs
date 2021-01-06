@@ -64,6 +64,7 @@ processURL url = do
   let video = Video url title videoName
   generateVideo video dir
   hPutStrLn stderr (T.unpack ("Downloaded video to " <> coerce dir <> coerce videoName <> "(.mp4|en.vtt)"))
+  hPutStrLn stderr "Generating still images from video (this may take a while)"
   generateShots dir videoName
   hPutStrLn stderr "Generated images"
   deleteVideo dir videoName

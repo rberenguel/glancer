@@ -42,7 +42,7 @@ The goal is to be able to glance at the talk to decide if you really want to wat
 
 A couple of additional neat (for me at least) features:
 - Hovering on the image will enlarge it, in case you want to see some code block larger.
-- Clicking on the image will open the video on Youtube, at that moment in time.
+- Clicking on the arrow on the lower-right of the slid block will open the video on Youtube, at that moment in time.
 
 ## Installation
 
@@ -76,7 +76,8 @@ In other words, `glancer https://www.youtube.com/watch?v=JWQxd3YKWhs internals-p
 
 - [ ] Making the time between images customizable via the CLI (if I find out 30 is not good enough in general).
 - [ ] Add a test suite to harden subtitle parsing. I always think parsers will be small enough and that it will be "obvious" they work. It's never the case, at least I did it [right](https://github.com/rberenguel/haskset/blob/master/test/Spec.hs) [twice](https://github.com/rberenguel/bear-note-graph/blob/master/tests/test_parser.py).
-- [ ] Some additional tweaks to the HTML/CSS (possibly adding some JS as well)
+- [ ] Make the still images video-dependent (so several `glancer` commands can run concurrently, even if it's a bad idea)
+- [/] Some additional tweaks to the HTML/CSS (possibly adding some JS as well). Partially done: added some smoother transitions and changed the linking to be more mobile/tablet friendly.
 
 _Note_: This README is long and winding on purpose.
 
