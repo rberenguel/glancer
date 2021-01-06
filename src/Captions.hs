@@ -44,6 +44,7 @@ formatCaptions captions (Url url) (Dir dir) = do
   let listy = toList (mapWithIndex (imgCaps url dir) toMap)
   intercalate "\n" <$> sequence listy
 
+imgCaps :: Integral a => T.Text -> T.Text -> a -> [Caption] -> IO T.Text
 imgCaps url dir ind captions = do
   let next = toInteger ind + 1
   img <- slideBlock url dir next
@@ -70,7 +71,7 @@ toVideoBlock url shot = do
   diva
 
 caps :: [Caption] -> T.Text
-caps captions = "\t<div class='txt'>\n" <> intercalate "\n" (map (<> "</br>") (stripped captions)) <> "\n\t</div>"
+caps captions = "\t<div class='txt'>\n" <> intercalate "\n" (stripped captions) <> "\n\t</div>"
   where
     stripped captions = map (("\t\t" <>) . strip . txt) captions
 

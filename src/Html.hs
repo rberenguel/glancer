@@ -54,14 +54,16 @@ heading =
             transform:scale(1.0) translate(0%);
             transition: transform 1.2s ease, border 0.1s ease; 
             padding: 1%;
+            height: 1%;
             width: 65%;
             display: inline-block;
         }
 
-        .img:hover{
-            transform:scale(1.4) translate(13%);
+        .active {
+            padding: 5px;
+            transform:scale(1.45) translate(17%);
 			border: 1px solid black;
-			background: rgba(255, 255, 255, 0.9);
+			background: rgba(255, 255, 255, 0.4);
 			-webkit-backdrop-filter: blur(10px);
   			backdrop-filter: blur(10px);
 			z-index: 1000;
@@ -83,6 +85,13 @@ heading =
             margin-top: 1%;
         }
     </style>
+    <script type="text/javascript">
+        window.onload = (_) => {
+            [...document.querySelectorAll(".img")].forEach( el =>
+                el.addEventListener('click', 
+                e => el.classList.toggle("active")
+            ))}
+    </script>
 </head>
 |]
 

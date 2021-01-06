@@ -44,7 +44,7 @@ youtubeURL (Id id) = Url ("https://www.youtube.com/watch?v=" <> id)
 
 generateVideo :: Video -> Dir -> IO ()
 generateVideo (Video (Url url) _ (Filename videoName)) (Dir dir) = do
-  callProcess "youtube-dlc" ["-q", "--no-playlist", "-f mp4", T.unpack ("-o" <> dir <> "/" <> videoName <> ".mp4"), "--write-auto-sub", "--no-warnings",  "--no-cache-dir", T.unpack url]
+  callProcess "youtube-dlc" ["-q", "--no-playlist", "-f mp4", T.unpack ("-o" <> dir <> "/" <> videoName <> ".mp4"), "--write-auto-sub", "--no-warnings", "--no-cache-dir", T.unpack url]
 
 generateShots :: Dir -> Filename -> IO ()
 generateShots (Dir dir) (Filename videoName) = do
