@@ -8,7 +8,7 @@ import Data.Sequence (fromList, mapWithIndex)
 import Data.Text (intercalate, strip)
 import qualified Data.Text as T
 import Data.Text.Encoding (decodeUtf8)
-import Html
+import Html (embody, heading)
 import Parser (Caption (block, txt), TimeBlock (..), TimeDef (..), inBlock, secs)
 import Process
   ( Dir (..),
@@ -45,21 +45,29 @@ formatCaptions captions (Url url) (Dir dir) = do
   intercalate "\n" <$> sequence listy
 
 imgCaps url dir ind captions = do
-  img <- slideBlock url dir (toInteger ind + 1)
-  return (img <> caps captions <> "</div>")
+  let next = toInteger ind + 1
+  img <- slideBlock url dir next
+  let toVideo = toVideoBlock url next
+  return (img <> caps captions <> toVideo <> "</div>")
 
 slideBlock :: T.Text -> T.Text -> Integer -> IO T.Text
 slideBlock url dir shot = do
   let imgPath = T.unpack (dir <> "/glancer-img" <> T.pack (printf "%04d.jpg" shot))
   (_, jpg, _) <- B.readProcessWithExitCode "/bin/cat" [imgPath] ""
   (_, base64, _) <- B.readProcessWithExitCode "base64" [] jpg
-  let when = T.pack $ show (shotSeconds shot 30)
   let slide = "<div id='slide" <> T.pack (show shot) <> "'class='slide-block'>\n"
-  let diva = "\t<div class='img'><a href='" <> url <> "&t=" <> when <> "'>\n"
+  let div = "\t<div class='img'>\n"
   let img = "\t\t<img src='data:image/jpeg;base64, " <> decodeUtf8 base64 <> "'/></a>\n"
   let close = "\t</div>\n"
-  let formatted = slide <> diva <> img <> close
+  let formatted = slide <> div <> img <> close
   return formatted
+
+toVideoBlock :: T.Text -> Integer -> T.Text
+toVideoBlock url shot = do
+  let when = T.pack $ show (shotSeconds shot 30)
+  let title = "title='Go to video at timestamp " <> when <> "s'"
+  let diva = "<div class='to-video'><a " <> title <> "href='" <> url <> "&t=" <> when <> "s'>&#8688;</a></div>"
+  diva
 
 caps :: [Caption] -> T.Text
 caps captions = "\t<div class='txt'>\n" <> intercalate "\n" (map (<> "</br>") (stripped captions)) <> "\n\t</div>"
