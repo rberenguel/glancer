@@ -17,6 +17,8 @@ newtype Url = Url T.Text
 
 newtype Title = Title T.Text
 
+newtype Id = Id T.Text
+
 newtype Dir = Dir T.Text
 
 newtype Filename = Filename T.Text
@@ -29,12 +31,20 @@ data Video = Video
 
 getTitle :: Url -> IO Title
 getTitle (Url url) = do
-  title <- readProcess "youtube-dlc" ["-e", T.unpack url] []
+  title <- readProcess "youtube-dlc" ["-e", "--no-warnings", T.unpack url] []
   return (Title $ T.pack title)
+
+getId :: Url -> IO Id
+getId (Url url) = do
+  id <- readProcess "youtube-dlc" ["--get-id", "--no-warnings", T.unpack url] []
+  return (Id $ T.pack id)
+
+youtubeURL :: Id -> Url
+youtubeURL (Id id) = Url ("https://www.youtube.com/watch?v=" <> id)
 
 generateVideo :: Video -> Dir -> IO ()
 generateVideo (Video (Url url) _ (Filename videoName)) (Dir dir) = do
-  callProcess "youtube-dlc" ["-q", "--no-playlist", "-f mp4", T.unpack ("-o" <> dir <> "/" <> videoName <> ".mp4"), "--write-auto-sub", "--no-cache-dir", T.unpack url]
+  callProcess "youtube-dlc" ["-q", "--no-playlist", "-f mp4", T.unpack ("-o" <> dir <> "/" <> videoName <> ".mp4"), "--write-auto-sub", "--no-warnings",  "--no-cache-dir", T.unpack url]
 
 generateShots :: Dir -> Filename -> IO ()
 generateShots (Dir dir) (Filename videoName) = do
@@ -61,11 +71,14 @@ processURL url = do
   dir <- Dir . T.pack <$> getTemporaryDirectory
   videoName <- Filename . T.pack <$> replicateM 10 (randomRIO ('a', 'z'))
   title <- getTitle url
-  let video = Video url title videoName
+  id <- getId url
+  let yourl = youtubeURL id
+  hPutStrLn stderr $ T.unpack (T.strip ("Downloading from " <> coerce yourl))
+  let video = Video yourl title videoName
   generateVideo video dir
   hPutStrLn stderr (T.unpack ("Downloaded video to " <> coerce dir <> coerce videoName <> "(.mp4|en.vtt)"))
   hPutStrLn stderr "Generating still images from video (this may take a while)"
   generateShots dir videoName
   hPutStrLn stderr "Generated images"
   deleteVideo dir videoName
-  return (dir, Video url title videoName)
+  return (dir, video)

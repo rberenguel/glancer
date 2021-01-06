@@ -47,7 +47,7 @@ formatCaptions captions (Url url) (Dir dir) = do
 imgCaps url dir ind captions = do
   let next = toInteger ind + 1
   img <- slideBlock url dir next
-  let toVideo = toVideoBlock url next
+  let toVideo = toVideoBlock url (toInteger ind)
   return (img <> caps captions <> toVideo <> "</div>")
 
 slideBlock :: T.Text -> T.Text -> Integer -> IO T.Text
