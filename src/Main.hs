@@ -47,7 +47,7 @@ getFullPath s = case splitPath s of
 
 start :: CLIConfig -> IO ()
 start (CLIConfig url filename) = do
-  hPutStrLn stderr ("Downloading " ++ url ++ " (this may take a while)")
+  hPutStrLn stderr ("Looking for video in " ++ url ++ " (this may take a while)")
   (dir, video) <- processURL (Url $ T.pack url)
   let videoName = file video
   capsPath <- getFullPath (T.unpack (coerce dir <> coerce videoName <> ".en.vtt"))

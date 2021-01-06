@@ -72,6 +72,8 @@ Available options:
 
 In other words, `glancer https://www.youtube.com/watch?v=JWQxd3YKWhs internals-pyspark-arrow` would create the webpage `internals-pyspark-arrow.html` in the current folder, after processing the talk I gave at Spark Summit 2019. You can see the generated file [here](https://www.mostlymaths.net/glancer/example/internals-pyspark-arrow.html).
 
+Sometimes `youtube-dlc` won't be able to find the embedded youtube video (I've seen this happen randomly in Spark Summit North America 2020 videos in databricks.com), in this case the process will fail. Try to feed it youtube urls directly.
+
 ## Notes and TODOs
 
 - [ ] Making the time between images customizable via the CLI (if I find out 30 is not good enough in general).
