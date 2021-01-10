@@ -31,12 +31,12 @@ data Video = Video
 
 getTitle :: Url -> IO Title
 getTitle (Url url) = do
-  title <- readProcess "youtube-dlc" ["-e", "--no-warnings", T.unpack url] []
+  title <- readProcess "youtube-dlc" ["-e", "--no-warnings", "--no-playlist", T.unpack url] []
   return (Title $ T.pack title)
 
 getId :: Url -> IO Id
 getId (Url url) = do
-  id <- readProcess "youtube-dlc" ["--get-id", "--no-warnings", T.unpack url] []
+  id <- readProcess "youtube-dlc" ["--get-id", "--no-warnings", "--no-playlist", T.unpack url] []
   return (Id $ T.pack id)
 
 youtubeURL :: Id -> Url
@@ -71,6 +71,7 @@ processURL url = do
   dir <- Dir . T.pack <$> getTemporaryDirectory
   videoName <- Filename . T.pack <$> replicateM 10 (randomRIO ('a', 'z'))
   title <- getTitle url
+  hPutStrLn stderr $ T.unpack ("The video is titled '" <> T.strip (coerce title) <> "'")
   id <- getId url
   let yourl = youtubeURL id
   hPutStrLn stderr $ T.unpack (T.strip ("Seems like the video is in " <> coerce yourl))
