@@ -5,6 +5,8 @@ module Process where
 import Control.Monad (replicateM)
 import Data.Coerce (coerce)
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
+import qualified Data.ByteString.Char8 as B
 import System.Directory (getTemporaryDirectory)
 import System.IO
   ( hPutStrLn,
@@ -32,7 +34,7 @@ data Video = Video
 getTitle :: Url -> IO Title
 getTitle (Url url) = do
   title <- readProcess "youtube-dlc" ["-e", "--no-warnings", "--no-playlist", T.unpack url] []
-  return (Title $ T.pack title)
+  return (Title $ TE.decodeUtf8 $ B.pack title) -- This deletes badly encoded characters, which is better than having them but worse than properly encoding them. Help appreciated
 
 getId :: Url -> IO Id
 getId (Url url) = do
