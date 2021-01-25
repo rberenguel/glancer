@@ -15,7 +15,8 @@ extra-source-files:  README.md
 common deps
   build-depends:       base >= 4.7 && < 5, text, 
                        bytestring, raw-strings-qq, 
-                       megaparsec, directory, filepath, mtl
+                       megaparsec, directory, filepath, mtl,
+                       html-entities
   default-language:    Haskell2010
   ghc-options:         -fwarn-incomplete-patterns 
                        -fwarn-unused-imports 

@@ -12,6 +12,10 @@
 
 ---
 
+[Regularly updated examples](https://github.com/rberenguel/glances)
+
+---
+
 - [Glancer](#glancer)
   - [Installation](#installation)
   - [Usage](#usage)
