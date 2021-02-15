@@ -12,6 +12,7 @@ import System.IO
   ( hPutStrLn,
     stderr,
   )
+import System.FilePath ( (-<.>), (</>) )
 import System.Process (callCommand, callProcess, readProcess)
 import System.Random (Random (randomRIO))
 
@@ -21,9 +22,9 @@ newtype Title = Title T.Text
 
 newtype Id = Id T.Text
 
-newtype Dir = Dir T.Text
+newtype Dir = Dir String
 
-newtype Filename = Filename T.Text
+newtype Filename = Filename String
 
 data Video = Video
   { url :: Url,
@@ -46,32 +47,34 @@ youtubeURL (Id id) = Url ("https://www.youtube.com/watch?v=" <> id)
 
 generateVideo :: Video -> Dir -> IO ()
 generateVideo (Video (Url url) _ (Filename videoName)) (Dir dir) = do
-  callProcess "youtube-dlc" ["-q", "--no-playlist", "-f mp4", T.unpack ("-o" <> dir <> "/" <> videoName <> ".mp4"), "--sub-langs", "en", "--write-auto-sub", "--write-sub", "--no-warnings", "--no-cache-dir", T.unpack url]
+  callProcess command arguments
+  where command = "youtube-dlc"
+        arguments = ["-q", "--no-playlist", "-f mp4", coerce ("-o" <> dir </> videoName -<.> "mp4"), "--sub-langs", "en", "--write-auto-sub", "--write-sub", "--no-warnings", "--no-cache-dir", T.unpack url]
 
 generateShots :: Dir -> Filename -> IO ()
 generateShots (Dir dir) (Filename videoName) = do
   callProcess
     "ffmpeg"
     [ "-i",
-      T.unpack (dir <> "/" <> videoName <> ".mp4"),
+      coerce (dir </> videoName -<.> "mp4"),
       "-vf",
       "fps=1/30",
-      T.unpack (dir <> "/glancer-img%04d.jpg"),
+      coerce (dir </> "glancer-img%04d" -<.> "jpg"),
       "-hide_banner",
       "-loglevel",
       "panic"
     ]
 
 deleteVideo :: Dir -> Filename -> IO ()
-deleteVideo (Dir dir) (Filename videoName) = callProcess "rm" [T.unpack (dir <> videoName <> ".mp4")]
+deleteVideo (Dir dir) (Filename videoName) = callProcess "rm" [coerce (dir </> videoName -<.> "mp4")]
 
 deleteImages :: Dir -> IO ()
-deleteImages (Dir dir) = callCommand $ T.unpack ("rm " <> dir <> "glancer-img*")
+deleteImages (Dir dir) = callCommand $ T.unpack ("rm " <> T.pack (dir </> "glancer-img*"))
 
 processURL :: Url -> IO (Dir, Video)
 processURL url = do
-  dir <- Dir . T.pack <$> getTemporaryDirectory
-  videoName <- Filename . T.pack <$> replicateM 10 (randomRIO ('a', 'z'))
+  dir <- Dir <$> getTemporaryDirectory
+  videoName <- Filename <$> replicateM 10 (randomRIO ('a', 'z'))
   title <- getTitle url
   hPutStrLn stderr $ T.unpack ("The video is titled '" <> T.strip (coerce title) <> "'")
   id <- getId url
@@ -79,7 +82,7 @@ processURL url = do
   hPutStrLn stderr $ T.unpack (T.strip ("Seems like the video is in " <> coerce yourl))
   let video = Video yourl title videoName
   generateVideo video dir
-  hPutStrLn stderr (T.unpack ("Downloaded video to " <> coerce dir <> coerce videoName <> "(.mp4|en.vtt)"))
+  hPutStrLn stderr (T.unpack ("Downloaded video to " <> (T.pack . coerce) dir <> (T.pack . coerce) videoName <> "(.mp4|en.vtt)"))
   hPutStrLn stderr "Generating still images from video (this may take a while)"
   generateShots dir videoName
   hPutStrLn stderr "Generated images"

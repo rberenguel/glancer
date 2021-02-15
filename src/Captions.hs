@@ -41,7 +41,7 @@ captionsToHTML video dir captions = do
 formatCaptions :: [Caption] -> Url -> Dir -> IO T.Text
 formatCaptions captions (Url url) (Dir dir) = do
   let toMap = fromList $ captionsPerSlide captions
-  let listy = toList (mapWithIndex (imgCaps url dir) toMap)
+  let listy = toList (mapWithIndex (imgCaps url (T.pack dir)) toMap)
   intercalate "\n" <$> sequence listy
 
 imgCaps :: Integral a => T.Text -> T.Text -> a -> [Caption] -> IO T.Text

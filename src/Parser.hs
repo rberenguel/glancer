@@ -77,16 +77,13 @@ timeLineP = do
   start <- hourBlockP
   arrowP
   space
-  end <- hourBlockP
-  manyTill anyChar (void eol <|> eof)
-  return (TimeBlock start end)
+  TimeBlock start <$> hourBlockP
 
 captionP :: Parser Caption
 captionP = do
   space
   block <- timeLineP
   caption <- T.pack <$> manyTill anyChar (try $ lookAhead (void timeLineP <|> void eof))
-  space
   return (Caption block caption)
 
 subsP :: Parser [Caption]
