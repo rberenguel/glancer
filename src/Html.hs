@@ -4,9 +4,9 @@
 module Html where
 
 import qualified Data.Text as T
+import qualified HTMLEntities.Text as H
 import Process (Title (..), Url (..), Video (..))
 import Text.RawString.QQ (r)
-import qualified HTMLEntities.Text as H
 
 heading :: T.Text
 heading =
