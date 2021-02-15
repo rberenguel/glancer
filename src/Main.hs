@@ -50,7 +50,7 @@ start (CLIConfig url filename) = do
   hPutStrLn stderr ("Looking for video in " ++ url ++ " (this may take a while)")
   (dir, video) <- processURL (Url $ T.pack url)
   let videoName = file video
-  capsPath <- getFullPath (T.unpack (coerce dir <> coerce videoName <> ".en.vtt"))
+  capsPath <- getFullPath (coerce dir <> coerce videoName <> ".en.vtt")
   handle <- openFile capsPath ReadMode
   hSetEncoding handle ascii
   contents <- hGetContents handle
