@@ -3,16 +3,16 @@
 module Process where
 
 import Control.Monad (replicateM)
+import qualified Data.ByteString.Char8 as B
 import Data.Coerce (coerce)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
-import qualified Data.ByteString.Char8 as B
 import System.Directory (getTemporaryDirectory)
+import System.FilePath ((-<.>), (</>))
 import System.IO
   ( hPutStrLn,
     stderr,
   )
-import System.FilePath ( (-<.>), (</>) )
 import System.Process (callCommand, callProcess, readProcess)
 import System.Random (Random (randomRIO))
 
@@ -48,8 +48,9 @@ youtubeURL (Id id) = Url ("https://www.youtube.com/watch?v=" <> id)
 generateVideo :: Video -> Dir -> IO ()
 generateVideo (Video (Url url) _ (Filename videoName)) (Dir dir) = do
   callProcess command arguments
-  where command = "youtube-dlc"
-        arguments = ["-q", "--no-playlist", "-f mp4", coerce ("-o" <> dir </> videoName -<.> "mp4"), "--sub-langs", "en", "--write-auto-sub", "--write-sub", "--no-warnings", "--no-cache-dir", T.unpack url]
+  where
+    command = "youtube-dlc"
+    arguments = ["-q", "--no-playlist", "-f mp4", coerce ("-o" <> dir </> videoName -<.> "mp4"), "--sub-langs", "en", "--write-auto-sub", "--write-sub", "--no-warnings", "-k", "--no-cache-dir", T.unpack url]
 
 generateShots :: Dir -> Filename -> IO ()
 generateShots (Dir dir) (Filename videoName) = do
