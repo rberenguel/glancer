@@ -42,7 +42,7 @@ data TimeBlock = TimeBlock
   { start :: TimeDef,
     end :: TimeDef
   }
-  deriving (Show)
+  deriving (Show, Eq)
 
 inBlock :: TimeDef -> TimeBlock -> Bool
 inBlock td tb = (secs . start $ tb) <= secstd && secstd <= (secs . end $ tb)
@@ -53,14 +53,14 @@ data Caption = Caption
   { block :: TimeBlock,
     txt :: T.Text
   }
-  deriving (Show)
+  deriving (Show, Eq)
 
 hourBlockP :: Parser TimeDef
 hourBlockP = do
   hours <- colonSeparated
   minutes <- colonSeparated
   seconds <- read <$> manyTill numberChar (char '.')
-  millis <- read <$> manyTill numberChar (void spaceChar <|> void eol)
+  millis <- read <$> manyTill numberChar (void spaceChar <|> try (lookAhead (void eol)))
   return (TimeDef hours minutes seconds millis)
   where
     colonSeparated = read <$> manyTill numberChar (char ':')
@@ -77,7 +77,9 @@ timeLineP = do
   start <- hourBlockP
   arrowP
   space
-  TimeBlock start <$> hourBlockP
+  end <- hourBlockP
+  manyTill anyChar eol
+  return (TimeBlock start end)
 
 captionP :: Parser Caption
 captionP = do
