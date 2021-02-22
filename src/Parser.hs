@@ -83,6 +83,7 @@ captionP :: Parser Caption
 captionP = do
   space
   block <- timeLineP
+  manyTill anyChar eol
   caption <- T.pack <$> manyTill anyChar (try $ lookAhead (void timeLineP <|> void eof))
   return (Caption block caption)
 
