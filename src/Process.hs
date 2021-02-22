@@ -52,19 +52,20 @@ generateVideo (Video (Url url) _ (Filename videoName)) (Dir dir) = do
     command = "youtube-dlc"
     arguments = ["-q", "--no-playlist", "-f mp4", coerce ("-o" <> dir </> videoName -<.> "mp4"), "--sub-langs", "en", "--write-auto-sub", "--write-sub", "--no-warnings", "-k", "--no-cache-dir", T.unpack url]
 
+args :: Dir -> Filename -> [String] -> String -> [String]
+args (Dir dir) (Filename videoName) selector suffix = [ "-i",
+                            coerce (dir </> videoName -<.> "mp4")]
+                            ++ selector ++ [
+                            coerce (dir </> "glancer-img" <> suffix -<.> "jpg"),
+                            "-hide_banner",
+                            "-loglevel",
+                            "panic"
+                          ]
+
 generateShots :: Dir -> Filename -> IO ()
-generateShots (Dir dir) (Filename videoName) = do
-  callProcess
-    "ffmpeg"
-    [ "-i",
-      coerce (dir </> videoName -<.> "mp4"),
-      "-vf",
-      "fps=1/30",
-      coerce (dir </> "glancer-img%04d" -<.> "jpg"),
-      "-hide_banner",
-      "-loglevel",
-      "panic"
-    ]
+generateShots dir video = do
+  callProcess "ffmpeg" (args dir video ["-vf", "fps=1/30"] "%04d")
+  callProcess "ffmpeg" (args dir video ["-vframes",  "1", "-ss", "3"] "0000" )
 
 deleteVideo :: Dir -> Filename -> IO ()
 deleteVideo (Dir dir) (Filename videoName) = callProcess "rm" [coerce (dir </> videoName -<.> "mp4")]

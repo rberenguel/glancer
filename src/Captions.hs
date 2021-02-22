@@ -46,8 +46,8 @@ formatCaptions captions (Url url) (Dir dir) = do
 
 imgCaps :: Integral a => T.Text -> T.Text -> a -> [Caption] -> IO T.Text
 imgCaps url dir ind captions = do
-  let next = toInteger ind + 1
-  img <- slideBlock url dir next
+  --let next = toInteger ind + 1
+  img <- slideBlock url dir (toInteger ind) --next
   let toVideo = toVideoBlock url (toInteger ind)
   return (img <> caps captions <> toVideo <> "</div>")
 
@@ -79,7 +79,7 @@ captionsPerSlide :: [Caption] -> [[Caption]]
 captionsPerSlide captions = map (capsForShot (filtering captions) 30) (shots (filtering captions))
   where
     filtering lst = filter (not . (T.isInfixOf "<c>" . txt)) lst
-    shots captions = [1 .. numShots (filtering captions) 30]
+    shots captions = [1 .. numShots captions 30 + 1]
 
 shotSeconds :: Integer -> Integer -> Integer
 shotSeconds shotNumber secsPerShot = shotNumber * secsPerShot

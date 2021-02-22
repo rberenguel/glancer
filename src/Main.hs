@@ -3,14 +3,15 @@
 module Main where
 
 import Captions (convertToHTML)
+import Data.Coerce (coerce)
 import Data.Text (pack)
 import qualified Data.Text as T
 import GHC.IO.Encoding.Latin1 (ascii)
 import qualified Options.Applicative as Ap
 import Parser (subsP)
 import Process
-  ( Dir (..), 
-  Filename (..),
+  ( Dir (..),
+    Filename (..),
     Url (..),
     Video (..),
     processURL,
@@ -27,7 +28,6 @@ import System.IO
   )
 import Text.Megaparsec (parse)
 import Prelude
-import Data.Coerce (coerce)
 
 data CLIConfig = CLIConfig
   { _url :: String,

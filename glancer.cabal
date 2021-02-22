@@ -37,4 +37,4 @@ test-suite tests
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test, src
   main-is:             Spec.hs
-  build-depends:       hspec, QuickCheck
+  build-depends:       hspec, QuickCheck, hspec-megaparsec

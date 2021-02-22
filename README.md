@@ -85,5 +85,13 @@ Sometimes `youtube-dlc` won't be able to find the embedded youtube video (I've s
 - [ ] Make the still images video-dependent (so several `glancer` commands can run concurrently, even if it's a bad idea)
 - [x] ~Some additional tweaks to the HTML/CSS (possibly adding some JS as well)~
 
+## Similar projects
+
+### [natural-language-youtube-search](https://github.com/haltakov/natural-language-youtube-search)
+
+This project downloads the YouTube video, extracts every N-th frame and uses neural networks to classify the content of each slide, allowing you to search by text. Impressive!
+
+---
+
 _Note_: This README is long and winding on purpose.
 
