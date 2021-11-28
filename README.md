@@ -61,6 +61,7 @@ You will need to have installed/available in the path:
 - The `base64` executable (should be in all IX systems by default)
 - `cat` in `/bin/cat` (likewise)
 - [`youtube-dlc`](https://github.com/blackjack4494/yt-dlc) installed. Note the _c_. There is currently a bug in the normal one with downloading auto-generated subtitles.
+- The [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/) Haskell build tool
 
 ## Usage
 
