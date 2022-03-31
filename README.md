@@ -1,10 +1,10 @@
 # Glancer
 
-> **glancer**: 
+> **glancer**:
 
 > NOUN _informal_ a person who glances
 
-> **glance**: 
+> **glance**:
 
 > VERB If you glance at something or someone, you look at them very quickly and then look away again immediately.
 
@@ -26,16 +26,19 @@
 The amount of online conferences has skyrocketed lately, I wonder why. This has caused my _Pending to watch_ list to balloon from 30-ish pending technical videos (which are already a lot) to more than 100.
 
 There are then 2 problems:
+
 1. I have too many techie conference videos to watch
 2. In a lot of cases I realise halfway through that the subject wasn't that interesting or that I already know the area to be covered.
 
 For a long while I have had a similar problem with written articles. I solved it by:
+
 1. Forcing me to read a substantial amount by [writing a weekly list of the best ones](https://mostlymaths.net/tags/readings/)
 2. Brutally stop reading any article that is not good enough to _possibly be_ in that list.
 
 This is easy in writing: you can quickly scan the text and decide if it looks interesting enough for a deep dive in a few seconds (tech article reads range from a few minutes to around half an hour, depending of how technical it may get). But there is no way of doing it in videos! You need to watch maybe 15-20 minutes to then realise "meh".
 
 _Glancer_ should help with this. Given a YouTube url, it will:
+
 - Download the corresponding video (to a temporary folder),
 - Download the auto-generated subtitles (assumes English, hardcoded),
 - Capture images from the video every N=30 seconds (hardcoded for the moment),
@@ -45,6 +48,7 @@ _Glancer_ should help with this. Given a YouTube url, it will:
 The goal is to be able to glance at the talk to decide if you really want to watch it or not. The _standalone_ part of the created webpage is to make it easier to "watch"/"share" to my iPad/iPhone without having to move a folder full of images. The whole talk becomes just a 5-15 Mb HTML file.
 
 A couple of additional neat (for me at least) features:
+
 - Clicking/tapping on the image will enlarge it, in case you want to see some code block larger (I wanted hover, but it was too tricky on mobile).
 - Clicking on the arrow on the lower-right of the slid block will open the video on Youtube, at that moment in time.
 
@@ -60,7 +64,7 @@ You will need to have installed/available in the path:
 
 - The `base64` executable (should be in all IX systems by default)
 - `cat` in `/bin/cat` (likewise)
-- [`youtube-dlc`](https://github.com/blackjack4494/yt-dlc) installed. Note the _c_. There is currently a bug in the normal one with downloading auto-generated subtitles.
+- [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) installed. Note the _p_. There is currently a bug in the normal one with downloading auto-generated subtitles (again, this also happened a long time ago).
 - The [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/) Haskell build tool
 
 ## Usage
@@ -95,4 +99,3 @@ This project downloads the YouTube video, extracts every N-th frame and uses neu
 ---
 
 _Note_: This README is long and winding on purpose.
-

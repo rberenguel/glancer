@@ -34,12 +34,12 @@ data Video = Video
 
 getTitle :: Url -> IO Title
 getTitle (Url url) = do
-  title <- readProcess "youtube-dlc" ["-e", "--no-warnings", "--no-playlist", T.unpack url] []
+  title <- readProcess "yt-dlp" ["-e", "--no-warnings", "--no-playlist", T.unpack url] []
   return (Title $ TE.decodeUtf8 $ B.pack title) -- This deletes badly encoded characters, which is better than having them but worse than properly encoding them. Help appreciated
 
 getId :: Url -> IO Id
 getId (Url url) = do
-  id <- readProcess "youtube-dlc" ["--get-id", "--no-warnings", "--no-playlist", T.unpack url] []
+  id <- readProcess "yt-dlp" ["--get-id", "--no-warnings", "--no-playlist", T.unpack url] []
   return (Id $ T.pack id)
 
 youtubeURL :: Id -> Url
@@ -49,7 +49,7 @@ generateVideo :: Video -> Dir -> IO ()
 generateVideo (Video (Url url) _ (Filename videoName)) (Dir dir) = do
   callProcess command arguments
   where
-    command = "youtube-dlc"
+    command = "yt-dlp"
     arguments = ["-q", "--no-playlist", "-f mp4", coerce ("-o" <> dir </> videoName -<.> "mp4"), "--sub-langs", "en", "--write-auto-sub", "--write-sub", "--no-warnings", "-k", "--no-cache-dir", T.unpack url]
 
 args :: Dir -> Filename -> [String] -> String -> [String]
