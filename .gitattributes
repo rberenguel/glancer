@@ -1,0 +1,2 @@
+* linguist-vendored
+*.hs linguist-vendored=false
