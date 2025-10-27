@@ -8,14 +8,13 @@ import Data.Void (Void)
 import Text.Megaparsec
   ( MonadParsec (eof, lookAhead, try),
     Parsec,
+    anySingle,
     manyTill,
     (<|>),
   )
 import Text.Megaparsec.Char
-  ( asciiChar,
-    char,
+  ( char,
     eol,
-    letterChar,
     numberChar,
     space,
     spaceChar,
@@ -70,7 +69,7 @@ arrowP = do
   string "-->"
 
 anyChar :: Parser Char
-anyChar = letterChar <|> spaceChar <|> asciiChar
+anyChar = anySingle
 
 timeLineP :: Parser TimeBlock
 timeLineP = do
