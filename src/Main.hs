@@ -6,7 +6,7 @@ import Captions (convertToHTML)
 import Data.Coerce (coerce)
 import Data.Text (pack)
 import qualified Data.Text as T
-import GHC.IO.Encoding.Latin1 (ascii)
+import GHC.IO.Encoding (utf8)
 import qualified Options.Applicative as Ap
 import Parser (subsP)
 import Process
@@ -53,7 +53,7 @@ start (CLIConfig url filename) = do
   let dir = coerce dir_
   capsPath <- getFullPath (dir </> videoName -<.> "en.vtt")
   handle <- openFile capsPath ReadMode
-  hSetEncoding handle ascii
+  hSetEncoding handle utf8
   contents <- hGetContents handle
   let parsed = parse subsP "" (pack contents)
   html <- convertToHTML video dir_ parsed

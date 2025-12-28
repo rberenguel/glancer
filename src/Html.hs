@@ -16,6 +16,7 @@ heading =
 <html>
 
 <head>
+    <meta charset="utf-8">
     <style>
         html {
             font-family: monoidregular;
